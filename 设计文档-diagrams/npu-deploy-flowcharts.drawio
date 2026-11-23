@@ -1,0 +1,159 @@
+<mxfile host="app.diagrams.net" agent="npu-vllm-ascend-deploy design" version="24.7.7">
+  <diagram id="p1" name="1-总控流程(模式路由)">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="s1" value="用户发起 NPU 部署请求" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="60" y="40" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="n1" value="步骤 0: 集群探测&#10;(npu-smi / docker / SFS / 驱动 / 端口 /&#10;并行部署冲突检查 docker ps)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="50" y="150" width="220" height="80" as="geometry" /></mxCell>
+        <mxCell id="d1" value="部署目标?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="90" y="280" width="140" height="70" as="geometry" /></mxCell>
+        <mxCell id="d2" value="MA 子形态?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="540" y="280" width="140" height="70" as="geometry" /></mxCell>
+        <mxCell id="n2" value="裸机 Docker 模式&#10;SKILL.md 步骤 0~8&#10;(自建集群 / SSH+Docker)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="50" y="420" width="200" height="80" as="geometry" /></mxCell>
+        <mxCell id="n3" value="MA-AscendCloud 高可用模式&#10;(版本包+指导文档&#10;RouteServer 六角色)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="440" y="420" width="200" height="80" as="geometry" /></mxCell>
+        <mxCell id="n4" value="MA-在线服务模式&#10;(OBS/SWR&#10;CreateInferService)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="820" y="420" width="200" height="80" as="geometry" /></mxCell>
+        <mxCell id="n5" value="共用前置: 步骤1 模型确认(硬性gate)&#10;步骤2 芯片+TP四条件&#10;步骤3 部署形式(xPyD)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="410" y="550" width="280" height="80" as="geometry" /></mxCell>
+        <mxCell id="n6" value="端到端验证 → 运维交付&#10;→ 实战经验回写 skill(闭环)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="430" y="680" width="240" height="70" as="geometry" /></mxCell>
+        <mxCell id="g1" value="Gate: 探测发现他人同类容器&#10;→ 停手, AskUserQuestion 协调" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="340" y="150" width="240" height="70" as="geometry" /></mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="s1" target="n1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" value="裸机/自建集群" edge="1" parent="1" source="n1" target="d1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" value="ModelArts" edge="1" parent="1" source="d1" target="d2" style="edgeStyle=orthogonalEdgeStyle;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="420" y="315" /></Array></mxGeometry></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="d1" target="n2" style="edgeStyle=orthogonalEdgeStyle;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" value="给版本包+指导文档" edge="1" parent="1" source="d2" target="n3" style="edgeStyle=orthogonalEdgeStyle;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" value="在线服务/资源池" edge="1" parent="1" source="d2" target="n4" style="edgeStyle=orthogonalEdgeStyle;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="n2" target="n5" style="edgeStyle=orthogonalEdgeStyle;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="n3" target="n5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="n4" target="n5" style="edgeStyle=orthogonalEdgeStyle;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="n5" target="n6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e11" value="发现冲突" style="strokeColor=#b85450;" edge="1" parent="1" source="n1" target="g1"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="p2" name="2-裸机模式 步骤0-8">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="a0" value="步骤0 集群探测&#10;连通矩阵/芯片实测/外网能力/冲突检查" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="40" y="40" width="180" height="70" as="geometry" /></mxCell>
+        <mxCell id="a1" value="步骤1 模型确认(硬性gate)&#10;查 vllm-ascend 文档列候选&#10;AskUserQuestion 确认&#10;权重路径必问用户(禁重下)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="40" y="150" width="180" height="90" as="geometry" /></mxCell>
+        <mxCell id="a2" value="步骤2 资源规格&#10;芯片细分(950DT/PR)&#10;TP四条件校验&#10;(头数∩档位∩文档∩显存)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="40" y="280" width="180" height="90" as="geometry" /></mxCell>
+        <mxCell id="a3" value="步骤3 部署形式&#10;single / multi_node / pd(xPyD)&#10;节点角色分配表确认" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="40" y="410" width="180" height="80" as="geometry" /></mxCell>
+        <mxCell id="a4" value="步骤4 镜像准备&#10;(见决策页4)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="180" height="60" as="geometry" /></mxCell>
+        <mxCell id="a5" value="步骤5 权重校验+产物生成&#10;config.env + 模板脚本&#10;产物自检关卡(Hard/Soft)&#10;权重暂存三级(见页5)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="40" y="630" width="180" height="90" as="geometry" /></mxCell>
+        <mxCell id="b1" value="步骤6 分发启动(严格顺序)&#10;全部 Prefill → 逐台 /health 200&#10;→ 全部 Decode → 200&#10;→ Proxy 最后" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="630" width="220" height="100" as="geometry" /></mxCell>
+        <mxCell id="b2" value="步骤7 端到端验证&#10;经 Proxy 请求 + 三侧日志核验&#10;KV 传输确认" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="470" width="220" height="80" as="geometry" /></mxCell>
+        <mxCell id="b3" value="步骤8 运维交付&#10;logs/stop/重建/改配置须知&#10;(docker rm -f 后 start)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="300" y="330" width="220" height="80" as="geometry" /></mxCell>
+        <mxCell id="c1" value="失败 → troubleshooting.md 对症&#10;→ 修复后经验回写 skill" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="620" y="500" width="220" height="70" as="geometry" /></mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="a0" target="a1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="a1" target="a2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="a2" target="a3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="a3" target="a4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="a4" target="a5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f6" edge="1" parent="1" source="a5" target="b1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f7" edge="1" parent="1" source="b1" target="b2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f8" edge="1" parent="1" source="b2" target="b3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f9" value="任何环节失败" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#b85450;" edge="1" parent="1" source="b1" target="c1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="g1" value="AskUserQuestion 硬性确认点:&#10;模型候选 / 芯片+TP / 形式+节点分配&#10;/ 权重路径 / 镜像tag / config复述" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1"><mxGeometry x="620" y="40" width="260" height="100" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="p3" name="3-MA-AscendCloud高可用模式">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="m0" value="输入: AscendCloud 版本包 + 实践指导文档" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="60" y="30" width="260" height="60" as="geometry" /></mxCell>
+        <mxCell id="m1" value="① 解析指导文档(docx→text)&#10;提取拓扑/Role/端口/参数" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="70" y="130" width="240" height="70" as="geometry" /></mxCell>
+        <mxCell id="m2" value="② 构建业务镜像&#10;atelier基础镜像(SWR拉)&#10;+ IMAGE_TYPE(A2/A3/A5)选子包&#10;+ build.sh(GitCode源 ~70min)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="70" y="240" width="240" height="90" as="geometry" /></mxCell>
+        <mxCell id="m3" value="③ 宿主机准备(P节点)&#10;1.1TB大页 + tcp_syn_retries=2&#10;清理残留(双杀 vll[m]/VLL[M]::)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="70" y="370" width="240" height="80" as="geometry" /></mxCell>
+        <mxCell id="m4" value="④ 容器创建(9个)&#10;P×3 D×1 etcd×3 rs-worker rs-candidate&#10;mooncake-master / 挂载 /data + ATB路径" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="70" y="490" width="240" height="90" as="geometry" /></mxCell>
+        <mxCell id="r1" value="⑤ ETCD×3 (32379/32380)&#10;etcdctl 三点健康" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="420" y="60" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="r2" value="⑥ RS Candidate(19802 选主)&#10;→ RS Worker(19800 API入口)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="420" y="160" width="200" height="70" as="geometry" /></mxCell>
+        <mxCell id="r3" value="⑦ Mooncake Master(52050/52052)&#10;APC 依赖(选主震荡可绕过)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="420" y="270" width="200" height="70" as="geometry" /></mxCell>
+        <mxCell id="r4" value="⑧ Prefill×3 (rank0先行75s)&#10;TP8×DP本地2 / 端口9081-9082" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="420" y="380" width="200" height="70" as="geometry" /></mxCell>
+        <mxCell id="r5" value="⑨ Decode×1&#10;TP2×DP本地8 / 端口9900-9907" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="420" y="490" width="200" height="70" as="geometry" /></mxCell>
+        <mxCell id="r6" value="⑩ 注册 rs_instance_join.py&#10;P(3×2) + D(1×8) → /status 全 running" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="420" y="600" width="200" height="70" as="geometry" /></mxCell>
+        <mxCell id="r7" value="⑪ 验证: curl :19800 chat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="740" y="600" width="180" height="60" as="geometry" /></mxCell>
+        <mxCell id="k1" value="必打补丁(实测四坑):&#10;1. libldap符号级空壳(openssl三方冲突)&#10;2. HANDSHAKE_TIMEOUT_MINS 5→60&#10;3. ATB lib路径显式 export&#10;4. VLLM_ENGINE_READY_TIMEOUT_S=3600&#10;5. 启动前后台cat预热页缓存" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;dashed=1;" vertex="1" parent="1"><mxGeometry x="740" y="180" width="280" height="140" as="geometry" /></mxCell>
+        <mxCell id="q1" edge="1" parent="1" source="m0" target="m1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q2" edge="1" parent="1" source="m1" target="m2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q3" edge="1" parent="1" source="m2" target="m3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q4" edge="1" parent="1" source="m3" target="m4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q5" edge="1" parent="1" source="m4" target="r1" style="edgeStyle=orthogonalEdgeStyle;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="370" y="90" /></Array></mxGeometry></mxCell>
+        <mxCell id="q6" edge="1" parent="1" source="r1" target="r2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q7" edge="1" parent="1" source="r2" target="r3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q8" edge="1" parent="1" source="r3" target="r4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q9" edge="1" parent="1" source="r4" target="r5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q10" edge="1" parent="1" source="r5" target="r6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="q11" edge="1" parent="1" source="r6" target="r7"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="p4" name="4-镜像获取决策">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="i0" value="需要镜像 quay.io/ascend/vllm-ascend:&lt;tag&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="60" y="40" width="240" height="60" as="geometry" /></mxCell>
+        <mxCell id="i1" value="用户有内部 SWR?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="100" y="150" width="160" height="80" as="geometry" /></mxCell>
+        <mxCell id="i2" value="节点能直连 quay?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="100" y="290" width="160" height="80" as="geometry" /></mxCell>
+        <mxCell id="i3" value="换源拉取 fast_pull2.sh&#10;多源轮换(hlmirror→quay直连)&#10;并发10段+卡速自断+签名刷新&#10;→ 拼 tar → docker load" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="380" y="270" width="250" height="100" as="geometry" /></mxCell>
+        <mxCell id="i4" value="入口节点 docker pull&#10;(重试循环, Akamai 时好时坏)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="60" y="430" width="200" height="70" as="geometry" /></mxCell>
+        <mxCell id="i5" value="docker save → SFS&#10;→ 内网节点 docker load&#10;(数据面走共享存储,零节点间ssh)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="380" y="440" width="250" height="80" as="geometry" /></mxCell>
+        <mxCell id="i6" value="MA-AscendCloud 模式:&#10;不拉现成镜像 — atelier 基础镜像&#10;+ 版本包现场 build.sh 构建" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="740" y="40" width="260" height="90" as="geometry" /></mxCell>
+        <mxCell id="w1" value="⚠ 根因备忘: quay blob 走 Akamai CDN(cdn01),&#10;华为云出口间歇不可达; 内网节点通常无外网" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;dashed=1;" vertex="1" parent="1"><mxGeometry x="700" y="580" width="340" height="70" as="geometry" /></mxCell>
+        <mxCell id="j1" edge="1" parent="1" source="i0" target="i1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="j2" value="有" edge="1" parent="1" source="i1" target="i6" style="strokeColor=#82b366;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="640" y="85" /></Array></mxGeometry></mxCell>
+        <mxCell id="j3" value="无" edge="1" parent="1" source="i1" target="i2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="j4" value="通" edge="1" parent="1" source="i2" target="i4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="j5" value="TLS超时/Retrying卡死" edge="1" parent="1" source="i2" target="i3" style="strokeColor=#b85450;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="j6" edge="1" parent="1" source="i4" target="i5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="j7" edge="1" parent="1" source="i3" target="i5"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="p5" name="5-权重三级暂存决策">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="h0" value="模型权重(正本在 SFS 共享存储)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="80" y="40" width="240" height="60" as="geometry" /></mxCell>
+        <mxCell id="h1" value="/data 盘有副本?&#10;(每节点 984G 数据盘)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="110" y="150" width="180" height="90" as="geometry" /></mxCell>
+        <mxCell id="h2" value="L1 /data/&lt;model&gt;&#10;常驻 · 重启不丢 · 秒级重启&#10;(首选, 拷一次终身用)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="80" y="300" width="240" height="80" as="geometry" /></mxCell>
+        <mxCell id="h3" value="/dev/shm 有副本?&#10;(节点大内存 RAM 盘)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="420" y="150" width="180" height="90" as="geometry" /></mxCell>
+        <mxCell id="h4" value="L2 /dev/shm/&lt;model&gt;&#10;加载最快(14s/390GB)&#10;⚠ 重启清空, start.sh 自动重拷" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="420" y="300" width="240" height="80" as="geometry" /></mxCell>
+        <mxCell id="h5" value="L3 SFS 直读&#10;⚠ MoE/EP 多worker遍历读&#10;实测 37min/分片 = 病理级慢&#10;(仅小模型可用)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="770" y="300" width="240" height="90" as="geometry" /></mxCell>
+        <mxCell id="h6" value="start.sh 自动暂存:&#10;两级皆无 → SFS 拷贝到 /data&#10;(~60-110min, 带进度输出)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="420" y="450" width="240" height="80" as="geometry" /></mxCell>
+        <mxCell id="h7" value="运行时规则: 首分片耗时 &gt; 2min&#10;→ 立即停服改暂存层, 别硬等" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1"><mxGeometry x="80" y="580" width="340" height="60" as="geometry" /></mxCell>
+        <mxCell id="k1" edge="1" parent="1" source="h0" target="h1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="k2" value="有" style="strokeColor=#82b366;" edge="1" parent="1" source="h1" target="h2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="k3" value="无" edge="1" parent="1" source="h1" target="h3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="k4" value="有" style="strokeColor=#6c8ebf;" edge="1" parent="1" source="h3" target="h4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="k5" value="无" style="strokeColor=#b85450;" edge="1" parent="1" source="h3" target="h5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="k6" edge="1" parent="1" source="h5" target="h6"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="p6" name="6-网络通道与3P1D拓扑">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="w1" value="Windows 控制机&#10;(cluster_ssh.ps1&#10;Posh-SSH + 端口转发隧道)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="60" y="80" width="200" height="80" as="geometry" /></mxCell>
+        <mxCell id="e1" value="EIP 入口节点 .98&#10;(<CLUSTER-EIP>)&#10;唯一有外网" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="380" y="80" width="180" height="80" as="geometry" /></mxCell>
+        <mxCell id="t1" value="SSH 直连 22" style="text;html=1;" edge="1" parent="1" source="w1" target="e1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="n1" value=".98&#10;P0 + Proxy/RS&#10;etcd-1&#10;(16×Ascend910)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="360" y="260" width="130" height="100" as="geometry" /></mxCell>
+        <mxCell id="n2" value=".28&#10;P1&#10;etcd-2&#10;rs-candidate&#10;(16卡)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="520" y="260" width="130" height="100" as="geometry" /></mxCell>
+        <mxCell id="n3" value=".55&#10;P2&#10;etcd-3&#10;(16卡)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="680" y="260" width="130" height="100" as="geometry" /></mxCell>
+        <mxCell id="n4" value=".181&#10;D0&#10;mooncake-master&#10;(16卡)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="840" y="260" width="130" height="100" as="geometry" /></mxCell>
+        <mxCell id="sfs" value="SFS Turbo 共享存储 /mnt/sfs_turbo&#10;(数据面: 权重正本 / 镜像tar / 脚本包 — 写一次全节点可见, 节点间零 SFTP)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="360" y="440" width="610" height="60" as="geometry" /></mxCell>
+        <mxCell id="t2" value="内网节点经入口隧道&#10;127.0.0.1:22&lt;末段&gt; → 节点:22" style="edgeStyle=orthogonalEdgeStyle;fontSize=10;fontColor=#666666;" edge="1" parent="1" source="e1" target="n1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t3" edge="1" parent="1" source="e1" target="n2" style="edgeStyle=orthogonalEdgeStyle;dashed=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t4" edge="1" parent="1" source="e1" target="n3" style="edgeStyle=orthogonalEdgeStyle;dashed=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t5" edge="1" parent="1" source="e1" target="n4" style="edgeStyle=orthogonalEdgeStyle;dashed=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t6" edge="1" parent="1" source="n1" target="sfs"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t7" edge="1" parent="1" source="n4" target="sfs"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="pd" value="请求流: 客户端 → Proxy(:8888/19800) → Prefill×3(Mooncake KV) → Decode → 回包&#10;启动序: 全部P → /health 200 → D → 200 → Proxy 最后 | 停止序相反" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1"><mxGeometry x="60" y="560" width="920" height="60" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
